@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   mlx_destroy_display.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mg <mg@student.42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/03 11:47:10 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/03/03 15:27:11 by joaoteix         ###   ########.fr       */
+/*   Created: 2020/10/03 18:56:35 by mg                #+#    #+#             */
+/*   Updated: 2020/10/04 01:55:35 by mg               ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "mlx_int.h"
 
-void	t_vec3_init(t_vec3 *vector)
+int	mlx_destroy_display(t_xvar *xvar)
 {
-	vector.x = 0;
-	vector.y = 0;
-	vector.z = 0;
+	XCloseDisplay(xvar->display);
 }
