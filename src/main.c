@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:56:36 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/03/03 18:37:43 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/03/04 12:20:02 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,7 @@ int	main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	map_dim = read_map(&map, argv[1]);
-	for(int y=0; y < map_dim.y; y++)
-	{
-		for(int x=0; x < map_dim.x; x++)
-			ft_dprintf(1, "%2d ", map[y][x]);
-		ft_putstr_fd("\n", 1);
-	}
+	render_main(map, map_dim);
 	free_map(map, map_dim);
+	ft_putstr_fd("Finished\n", 1);
 }
