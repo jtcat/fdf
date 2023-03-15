@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:56:36 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/03/04 12:20:02 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/03/15 15:20:04 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ int	arr_atoi(int **dest, char *str)
 	return (arrlen);
 }
 
-t_vec3	read_map(int ***ref_map, char *filename)
+t_ivec3	read_map(int ***ref_map, char *filename)
 {
-	t_vec3	dim;
+	t_ivec3	dim;
 	int		y;
 	int		fd;
 
@@ -66,10 +66,11 @@ t_vec3	read_map(int ***ref_map, char *filename)
 	y = 0;
 	while (y < dim.y)
 		dim.x = arr_atoi(*ref_map + y++, get_next_line(fd));
+	close(fd);
 	return (dim);
 }
 
-void	free_map(int **map, t_vec3 map_dim)
+void	free_map(int **map, t_ivec3 map_dim)
 {
 	while (map_dim.y-- > 0)
 		free(map[map_dim.y]);
@@ -78,7 +79,7 @@ void	free_map(int **map, t_vec3 map_dim)
 
 int	main(int argc, char **argv)
 {
-	t_vec3	map_dim;
+	t_ivec3	map_dim;
 	int		**map;
 
 	if (argc != 2)
