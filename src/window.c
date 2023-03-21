@@ -6,11 +6,12 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 19:11:27 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/03/15 15:33:14 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:26:56 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include "minilibx-linux/mlx.h"
 
 int	key_handler(int keycode, void *params)
 {
@@ -19,31 +20,41 @@ int	key_handler(int keycode, void *params)
 	return 1;
 }
 
-void	render_image(t_rcontext *context, void *img)
+void	render_image(t_rcontext *context)
 {
-	(void)context;
-	(void)img;
+	t_ivec3	p;
+
+	t_ivec3_init(&p);
+	while (p.x++ < (context->win_dim.x - 1))
+		while (p.y++ < (context->win_dim.y - 1))
+		{
+			draw_line(context, p.x + 1, p.y, context->line_color);
+			draw_line(context, p.x, p.y + 1, context->line_color);
+		}
 }
 
-int	loop_handler(t_rcontext *context)
+int	loop_handler(t_rcontext *ctx)
 {
-	void	*img;
-
-	img = mlx_new_image(context->mlx_ptr, context->win_dim.x, context->win_dim.y);
-	render_image(context, img);
-	mlx_put_image_to_window(context->mlx_ptr, context->win_ptr, img, 0, 0);
-	mlx_destroy_image(context->mlx_ptr, img);
+	render_image(ctx, ctx->img);
+	mlx_put_image_to_window(ctx->mlx_ptr, ctx->win_ptr, ctx->img, 0, 0);
 	return (1);
 }
 
-void	*create_window(void *mlx_ptr)
+void	create_window(t_rcontext *ctx)
 {
-	void	*win_ptr;
-	t_ivec3	screen_size;
+	int	bendian;
+	int	cdepth;
+	int	line_size;
 
-	mlx_get_screen_size(mlx_ptr, &screen_size.x, &screen_size.y);
-	win_ptr = mlx_new_window(mlx_ptr, screen_size.x - 300, screen_size.y - 200, WIN_TITLE);
-	return (win_ptr);
+	bendian = 1;
+	cdepth = COLOR_DEPTH;
+	line_size = cdepth * ctx->win_dim.x;
+	mlx_get_screen_size(ctx->mlx_ptr, &ctx->win_dim.x, &ctx->win_dim.y);
+	ctx->win_ptr = mlx_new_window(ctx->mlx_ptr, 
+			ctx->win_dim.x - 300, 
+			ctx->win_dim.y - 200, WIN_TITLE);
+	ctx->img = mlx_new_image(ctx->mlx_ptr, ctx->win_dim.x, ctx->win_dim.y);
+	ctx->img_data = mlx_get_data_addr(ctx->img, &cdepth, &line_size, &bendian);
 }
 
 int	render_main(int **map, t_ivec3 dim)
@@ -52,7 +63,7 @@ int	render_main(int **map, t_ivec3 dim)
 
 	context = malloc(sizeof(t_rcontext));
 	context->mlx_ptr = mlx_init();
-	context->win_ptr = create_window(context->mlx_ptr);
+	create_window(context);
 	context->map = map;
 	context->map_dim = dim;
 	mlx_key_hook(context->win_ptr, &key_handler, context->mlx_ptr);
@@ -61,6 +72,7 @@ int	render_main(int **map, t_ivec3 dim)
 	mlx_loop(context->mlx_ptr);
 	mlx_destroy_window(context->mlx_ptr, context->win_ptr);
 	mlx_destroy_display(context->mlx_ptr);
+	mlx_destroy_image(context->mlx_ptr, context->img);
 	free(context->mlx_ptr);
 	free(context);
 	return (1);

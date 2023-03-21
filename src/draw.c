@@ -6,13 +6,15 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 14:42:17 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/03/15 13:12:34 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/03/21 16:25:53 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	draw_line(t_rcontext *cont, t_ivec2 start, t_ivec2 end, i_rgb color)
+void	plot(void *img_data, int *x, int *y, argb color);
+
+void	draw_line(t_rcontext *cont, t_ivec2 start, t_ivec2 end, argb color)
 {
 	int	dx, sx, dy, sy, error, e2;
 
@@ -23,7 +25,7 @@ void	draw_line(t_rcontext *cont, t_ivec2 start, t_ivec2 end, i_rgb color)
     error = dx + dy;
     while (1)
 	{
-        plot(start.x, start.y)
+        plot(cont->img_data, &start.x, &start.y, color);
         if (start.x == end.x && start.y == end.y)
 			break ;
         e2 = 2 * error;
