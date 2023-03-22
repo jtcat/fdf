@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 19:11:27 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/03/22 15:38:41 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/03/22 19:07:42 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	draw_image(t_rcontext *context)
 {
 	t_ivec3	p;
 
-	t_ivec3_init(&p);
+	p = ctx->img_dim;
 	while (p.x++ < (context->win_dim.x - 1))
 		while (p.y++ < (context->win_dim.y - 1))
 		{
@@ -33,7 +33,7 @@ void	draw_image(t_rcontext *context)
 		}
 }
 
-void	project_map(int **og_map, t_dvec3 **rot_map, t_ivec2 size)
+void	project_map(int **og_map, t_ivec3 **proj_map, t_ivec2 size)
 {
 	double	*a;
 
@@ -42,12 +42,15 @@ void	project_map(int **og_map, t_dvec3 **rot_map, t_ivec2 size)
 	mat3	alpha = {1, 0, 0, 0, cos(a), sin(a), 0, -sin(a), cos(a)};
 	mat3	beta = {cos(b), 0, -sin(b), 0, 1, 0, sin(b), 0, cos(b)};
 	mat3	rot_mat = mat3_prod(alpha, beta);
-	t_dvec3 res = mat3_vec3_prod(rot_mat, );
+	while (size.x-- > 0)
+		while (size.y-- > 0)
+			proj_map[x][y] = mat3_vec3_prod(rot_mat, og_map[y][x]);
 }
 
 int	loop_handler(t_rcontext *ctx)
 {
 	render_image(ctx, ctx->img);
+	project_map(ctx->raw_map, ctx->proj_map, ctx->map_dim);
 	mlx_put_image_to_window(ctx->mlx_ptr, ctx->win_ptr, ctx->img, 0, 0);
 	return (1);
 }
@@ -67,6 +70,15 @@ void	create_window(t_rcontext *ctx)
 			&ctx->color_depth, &ctx->line_len, &ctx->endian);
 }
 
+void	destroy_context(t_rcontext *ctx)
+{
+	mlx_destroy_window(ctx->mlx_ptr, ctx->win_ptr);
+	mlx_destroy_display(ctx->mlx_ptr);
+	mlx_destroy_image(ctx->mlx_ptr, ctx->img);
+	free(ctx->mlx_ptr);
+	free(ctx);
+}
+
 int	render_main(int **map, t_ivec3 dim)
 {
 	t_rcontext	*context;
@@ -80,10 +92,5 @@ int	render_main(int **map, t_ivec3 dim)
 	mlx_hook(context->win_ptr, DESTROY_NOTIFY, 0, &mlx_loop_end, context->mlx_ptr);
 	mlx_loop_hook(context->win_ptr, &loop_handler, NULL);
 	mlx_loop(context->mlx_ptr);
-	mlx_destroy_window(context->mlx_ptr, context->win_ptr);
-	mlx_destroy_display(context->mlx_ptr);
-	mlx_destroy_image(context->mlx_ptr, context->img);
-	free(context->mlx_ptr);
-	free(context);
 	return (1);
 }
