@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:56:36 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/03/15 15:20:04 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/03/21 17:34:59 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	get_map_height(char *filename)
 		line = get_next_line(fd);
 		lines++;
 	}
+	close(fd);
 	return (lines);
 }
 
