@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 11:41:00 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/03/21 16:26:37 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/03/22 15:38:43 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # define WIN_HEIGHT 800
 # define WIN_WIDTH 600
 # define WIN_TITLE "FdF"
-# define COLOR_DEPTH 16
 
 # define DESTROY_NOTIFY 17
 # define KEY_ESC 65307
@@ -48,7 +47,10 @@ typedef struct s_rcontext
 	void	*mlx_ptr;
 	void	*win_ptr;
 	void	*img;
-	char	*img_data;
+	char	*img_addr;
+	int		color_depth;
+	int		line_len;
+	int		endian;
 	t_ivec3	win_dim;
 	int		**map;
 	t_ivec3	map_dim;
@@ -57,7 +59,7 @@ typedef struct s_rcontext
 
 argb	uni_rgb(int r, int g, int b);
 void	t_ivec3_init(t_ivec3 *vec);
-void	plot(void *img_data, int *x, int *y, argb color);
+void	plot(void *img_data, int x, int y, argb color);
 void	draw_line(t_rcontext *cont, t_ivec2 start, t_ivec2 end, argb color);
 
 #endif

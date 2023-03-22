@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 19:11:27 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/03/22 12:56:15 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/03/22 15:38:41 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,17 @@ void	draw_image(t_rcontext *context)
 		}
 }
 
-*project_map(t_rcontext *context)
+void	project_map(int **og_map, t_dvec3 **rot_map, t_ivec2 size)
 {
 	double	*a;
-	t_ivec3	**proj_map;
 
 	a = 35.264f;
 	b = 45f;
 	mat3	alpha = {1, 0, 0, 0, cos(a), sin(a), 0, -sin(a), cos(a)};
 	mat3	beta = {cos(b), 0, -sin(b), 0, 1, 0, sin(b), 0, cos(b)};
 	mat3	rot_mat = mat3_prod(alpha, beta);
-	t_dvec3 res = mat3_vec3_prod(rot_mat, 
-	
+	t_dvec3 res = mat3_vec3_prod(rot_mat, );
+}
 
 int	loop_handler(t_rcontext *ctx)
 {
@@ -59,15 +58,13 @@ void	create_window(t_rcontext *ctx)
 	int	cdepth;
 	int	line_size;
 
-	bendian = 1;
-	cdepth = COLOR_DEPTH;
-	line_size = cdepth * ctx->win_dim.x;
 	mlx_get_screen_size(ctx->mlx_ptr, &ctx->win_dim.x, &ctx->win_dim.y);
 	ctx->win_ptr = mlx_new_window(ctx->mlx_ptr, 
 			ctx->win_dim.x - 300, 
 			ctx->win_dim.y - 200, WIN_TITLE);
 	ctx->img = mlx_new_image(ctx->mlx_ptr, ctx->win_dim.x, ctx->win_dim.y);
-	ctx->img_data = mlx_get_data_addr(ctx->img, &cdepth, &line_size, &bendian);
+	ctx->img_data = mlx_get_data_addr(ctx->img,
+			&ctx->color_depth, &ctx->line_len, &ctx->endian);
 }
 
 int	render_main(int **map, t_ivec3 dim)

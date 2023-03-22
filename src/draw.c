@@ -6,15 +6,19 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 14:42:17 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/03/22 11:58:44 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/03/22 15:21:39 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	plot(void *img_data, int *x, int *y, argb color)
+void	plot(void *img_data, int x, int y, argb color)
 {
-	img_data
+	char	*dst;
+
+	dst =  img_data + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int*)dst = color;
+}
 
 void	draw_line(t_rcontext *cont, t_ivec2 start, t_ivec2 end, argb color)
 {
@@ -27,7 +31,7 @@ void	draw_line(t_rcontext *cont, t_ivec2 start, t_ivec2 end, argb color)
     error = dx + dy;
     while (1)
 	{
-        plot(cont->img_data, &start.x, &start.y, color);
+        plot(cont->img_data, start.x, start.y, color);
         if (start.x == end.x && start.y == end.y)
 			break ;
         e2 = 2 * error;
