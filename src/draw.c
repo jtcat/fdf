@@ -6,13 +6,15 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 14:42:17 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/03/21 16:25:53 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/03/22 11:58:44 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	plot(void *img_data, int *x, int *y, argb color);
+void	plot(void *img_data, int *x, int *y, argb color)
+{
+	img_data
 
 void	draw_line(t_rcontext *cont, t_ivec2 start, t_ivec2 end, argb color)
 {

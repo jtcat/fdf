@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 19:11:27 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/03/21 16:26:56 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/03/22 12:56:15 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	key_handler(int keycode, void *params)
 	return 1;
 }
 
-void	render_image(t_rcontext *context)
+void	draw_image(t_rcontext *context)
 {
 	t_ivec3	p;
 
@@ -32,6 +32,19 @@ void	render_image(t_rcontext *context)
 			draw_line(context, p.x, p.y + 1, context->line_color);
 		}
 }
+
+*project_map(t_rcontext *context)
+{
+	double	*a;
+	t_ivec3	**proj_map;
+
+	a = 35.264f;
+	b = 45f;
+	mat3	alpha = {1, 0, 0, 0, cos(a), sin(a), 0, -sin(a), cos(a)};
+	mat3	beta = {cos(b), 0, -sin(b), 0, 1, 0, sin(b), 0, cos(b)};
+	mat3	rot_mat = mat3_prod(alpha, beta);
+	t_dvec3 res = mat3_vec3_prod(rot_mat, 
+	
 
 int	loop_handler(t_rcontext *ctx)
 {
