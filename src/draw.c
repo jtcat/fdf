@@ -6,21 +6,30 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 14:42:17 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/03/22 15:21:39 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/03/31 21:32:53 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <stdio.h>
 
-void	plot(void *img_data, int x, int y, argb color)
+int	in_range(int lower, int upper, int numb)
+{
+	return (numb >= lower && numb <= upper);
+}
+
+void	plot(t_rcontext *ctx, int x, int y, argb color)
 {
 	char	*dst;
 
-	dst =  img_data + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
+	if (in_range(0, ctx->win_dim.x, x) && in_range(0, ctx->win_dim.y, y))
+	{
+		dst =  ctx->img_addr + (y * ctx->line_len + x * (ctx->color_depth / 8));
+		*(unsigned int*)dst = color;
+	}
 }
 
-void	draw_line(t_rcontext *cont, t_ivec2 start, t_ivec2 end, argb color)
+void	draw_line(t_rcontext *ctx, t_ivec3 start, t_ivec3 end, argb color)
 {
 	int	dx, sx, dy, sy, error, e2;
 
@@ -31,7 +40,7 @@ void	draw_line(t_rcontext *cont, t_ivec2 start, t_ivec2 end, argb color)
     error = dx + dy;
     while (1)
 	{
-        plot(cont->img_data, start.x, start.y, color);
+        plot(ctx, start.x, start.y, color);
         if (start.x == end.x && start.y == end.y)
 			break ;
         e2 = 2 * error;
@@ -50,4 +59,14 @@ void	draw_line(t_rcontext *cont, t_ivec2 start, t_ivec2 end, argb color)
             start.y += sy;
 		}
 	}
+}
+
+t_ivec3	mat3_vec3_prod(const mat3 mat, t_ivec3 vec)
+{
+	t_dvec3	new_vec;
+
+	new_vec.x = mat[0] * vec.x + mat[1] * vec.y + mat[2] * vec.z;
+	new_vec.y = mat[3] * vec.x + mat[4] * vec.y + mat[5] * vec.z;
+	new_vec.z = mat[6] * vec.x + mat[7] * vec.y + mat[8] * vec.z;
+	return (t_ivec3){200 + round(new_vec.x), 100 + round(new_vec.y), 0};
 }

@@ -6,11 +6,12 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:56:36 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/03/21 17:34:59 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/03/27 21:11:40 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <stdio.h>
 
 int	get_map_height(char *filename)
 {
@@ -55,9 +56,9 @@ int	arr_atoi(int **dest, char *str)
 	return (arrlen);
 }
 
-t_ivec3	read_map(int ***ref_map, char *filename)
+t_ivec2	read_map(int ***ref_map, char *filename)
 {
-	t_ivec3	dim;
+	t_ivec2	dim;
 	int		y;
 	int		fd;
 
@@ -71,16 +72,9 @@ t_ivec3	read_map(int ***ref_map, char *filename)
 	return (dim);
 }
 
-void	free_map(int **map, t_ivec3 map_dim)
-{
-	while (map_dim.y-- > 0)
-		free(map[map_dim.y]);
-	free(map);
-}
-
 int	main(int argc, char **argv)
 {
-	t_ivec3	map_dim;
+	t_ivec2	map_dim;
 	int		**map;
 
 	if (argc != 2)
@@ -90,6 +84,5 @@ int	main(int argc, char **argv)
 	}
 	map_dim = read_map(&map, argv[1]);
 	render_main(map, map_dim);
-	free_map(map, map_dim);
 	ft_putstr_fd("Finished\n", 1);
 }
