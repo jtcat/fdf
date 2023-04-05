@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 14:42:17 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/03/31 21:32:53 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/04/05 16:29:05 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	plot(t_rcontext *ctx, int x, int y, argb color)
 
 	if (in_range(0, ctx->win_dim.x, x) && in_range(0, ctx->win_dim.y, y))
 	{
-		dst =  ctx->img_addr + (y * ctx->line_len + x * (ctx->color_depth / 8));
+		dst =  ctx->img_addr + y  * ctx->line_len + x * (ctx->color_depth / 8);
 		*(unsigned int*)dst = color;
 	}
 }

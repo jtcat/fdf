@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 19:11:27 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/03/31 22:32:53 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/04/05 15:09:18 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	project_map(int **og_map, t_ivec3 **proj_map, t_ivec2 size, int scale)
 		p.y = -1;
 		while (++p.y < size.y)
 		{
-			vec = (t_ivec3){p.x * scale, p.y * scale, og_map[p.y][p.x] * scale};
+			vec = (t_ivec3){(p.x + p.x / 2) * scale, (p.y + p.y / 2) * scale, og_map[p.y][p.x] * scale};
 			proj_map[p.x][p.y] = mat3_vec3_prod(rot_mat, vec);
 		}
 	}
@@ -80,9 +80,9 @@ void	create_window(t_rcontext *ctx)
 	ctx->img_addr = mlx_get_data_addr(ctx->img,
 			&ctx->color_depth, &ctx->line_len, &ctx->endian);
 	init_proj_map(&ctx->proj_map, ctx->map_dim);
-	ctx->scale = 35;
-	ctx->map_offset = (t_ivec3){200,200,0};
-	project_map(ctx->raw_map, ctx->proj_map, ctx->map_dim);
+//	ctx->scale = 35;
+//	ctx->map_offset = (t_ivec3){200,200,0};
+	project_map(ctx->raw_map, ctx->proj_map, ctx->map_dim, 35);
 	//draw_line(ctx, (t_ivec3){0, 0, 0}, (t_ivec3){500, 500, 0}, uni_rgb(255, 255, 255));
 	draw_image(ctx);
 }
