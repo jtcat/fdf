@@ -6,14 +6,14 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:56:36 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/04/05 15:10:15 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/04/21 18:09:01 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <stdio.h>
 
-int	get_map_height(char *filename)
+int	get_map_width(char *filename)
 {
 	char	*line;
 	int		lines;
@@ -32,49 +32,67 @@ int	get_map_height(char *filename)
 	return (lines);
 }
 
-int	arr_atoi(int **dest, char *str)
+t_ivec3	arr_atoi(int **dest, char *str)
 {
 	char	**strarr;
-	int		arrlen;
+	t_ivec3	size;
 	int		i;
 
 	strarr = ft_split(str, ' ');
 	free(str);
+	t_ivec3_init(&size);
 	if (!strarr)
-		return (0);
-	arrlen = 0;
-	while (strarr[arrlen])
-		arrlen++;
-	*dest = malloc(sizeof(int) * arrlen);
+		return (size);
+	while (strarr[size.x])
+		size.x++;
+	*dest = malloc(sizeof(int) * size.x);
 	i = 0;
-	while (i < arrlen)
+	while (i < size.x)
 	{
 		(*dest)[i] = ft_atoi(strarr[i]);
+		if ((*dest)[i] > size.z)
+			size.z = (*dest)[i];
 		free(strarr[i++]);
 	}
 	free(strarr);
-	return (arrlen);
+	return (size);
 }
 
-t_ivec2	read_map(int ***ref_map, char *filename)
+t_ivec3	read_map(int ***ref_map, char *filename)
 {
-	t_ivec2	dim;
+	t_ivec3	dim;
+	t_ivec3	aux_dim;
 	int		y;
 	int		fd;
 
-	dim.y = get_map_height(filename);
+	dim.y = get_map_width(filename);
 	*ref_map = malloc(sizeof(int *) * dim.y);
 	fd = open(filename, O_RDONLY);
 	y = 0;
+	aux_dim = arr_atoi(*ref_map + y++, get_next_line(fd));
+	dim.x = aux_dim.x;
+	dim.z = aux_dim.z;
 	while (y < dim.y)
-		dim.x = arr_atoi(*ref_map + y++, get_next_line(fd));
+	{
+		aux_dim = arr_atoi(*ref_map + y++, get_next_line(fd));
+		if (aux_dim.x != dim.x)
+		{
+			while (y >= 0)
+				free((*ref_map)[y--]);			
+			free(*ref_map);
+			close(fd);
+			exit(EXIT_FAILURE);
+		}
+		if (aux_dim.z > dim.z)
+			dim.z = aux_dim.z;
+	}
 	close(fd);
 	return (dim);
 }
 
 int	main(int argc, char **argv)
 {
-	t_ivec2	map_dim;
+	t_ivec3	map_dim;
 	int		**map;
 
 	if (argc != 2)

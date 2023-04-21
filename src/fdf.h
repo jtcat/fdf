@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 11:41:00 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/03/27 22:31:04 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/04/21 17:28:59 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,18 @@ typedef struct s_rcontext
 	t_ivec3	win_dim;
 	int		**raw_map;
 	t_ivec3	**proj_map;
-	t_ivec2	map_dim;
+	t_ivec3	map_dim;
 	int		line_color;
+	int		scale;
 }	t_rcontext;
 
 argb	uni_rgb(int r, int g, int b);
 void	t_ivec3_init(t_ivec3 *vec);
+void	t_ivec2_init(t_ivec2 *vec);
 void	plot(t_rcontext *ctx, int x, int y, argb color);
 void	draw_line(t_rcontext *cont, t_ivec3 start, t_ivec3 end, argb color);
-int		render_main(int **map, t_ivec2 dim);
+int		render_main(int **map, t_ivec3 dim);
 t_ivec3	mat3_vec3_prod(const mat3 mat, t_ivec3 vec);
+t_ivec3	vec3_sum(t_ivec3 v1, t_ivec3 v2);
 
 #endif

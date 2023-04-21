@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 14:42:17 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/04/05 16:29:05 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/04/21 15:37:20 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,5 @@ t_ivec3	mat3_vec3_prod(const mat3 mat, t_ivec3 vec)
 	new_vec.x = mat[0] * vec.x + mat[1] * vec.y + mat[2] * vec.z;
 	new_vec.y = mat[3] * vec.x + mat[4] * vec.y + mat[5] * vec.z;
 	new_vec.z = mat[6] * vec.x + mat[7] * vec.y + mat[8] * vec.z;
-	return (t_ivec3){200 + round(new_vec.x), 100 + round(new_vec.y), 0};
+	return (t_ivec3){round(new_vec.x), round(new_vec.y), 0};
 }
