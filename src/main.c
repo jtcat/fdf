@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:56:36 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/04/21 18:09:01 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/04/22 02:43:37 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_ivec3	read_map(int ***ref_map, char *filename)
 		if (aux_dim.x != dim.x)
 		{
 			while (y >= 0)
-				free((*ref_map)[y--]);			
+				free((*ref_map)[y--]);
 			free(*ref_map);
 			close(fd);
 			exit(EXIT_FAILURE);
