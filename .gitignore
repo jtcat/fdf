@@ -3,3 +3,8 @@
 *.o
 *.a
 fdf
+bonus
+fdf_linux
+minilibx*
+minilibx*/**
+test_maps/**
