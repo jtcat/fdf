@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:56:36 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/04/22 02:43:37 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/04/23 14:24:25 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,59 +32,46 @@ int	get_map_width(char *filename)
 	return (lines);
 }
 
-t_ivec3	arr_atoi(int **dest, char *str)
+int	arr_atoi(int **dest, char *str)
 {
 	char	**strarr;
-	t_ivec3	size;
+	int		len;
 	int		i;
 
 	strarr = ft_split(str, ' ');
 	free(str);
-	t_ivec3_init(&size);
 	if (!strarr)
-		return (size);
-	while (strarr[size.x])
-		size.x++;
-	*dest = malloc(sizeof(int) * size.x);
+		return (-1);
+	len = 0;
+	while (strarr[len])
+		len++;
+	*dest = malloc(sizeof(int) * len);
 	i = 0;
-	while (i < size.x)
+	while (i < len)
 	{
 		(*dest)[i] = ft_atoi(strarr[i]);
-		if ((*dest)[i] > size.z)
-			size.z = (*dest)[i];
 		free(strarr[i++]);
 	}
 	free(strarr);
-	return (size);
+	return (len);
 }
 
-t_ivec3	read_map(int ***ref_map, char *filename)
+t_ivec2	read_map(int ***ref_map, char *filename)
 {
-	t_ivec3	dim;
-	t_ivec3	aux_dim;
+	t_ivec2	dim;
+	int		tmp_x;
 	int		y;
 	int		fd;
 
-	dim.y = get_map_width(filename);
+	dim = (t_ivec2){0, get_map_width(filename)};
 	*ref_map = malloc(sizeof(int *) * dim.y);
 	fd = open(filename, O_RDONLY);
 	y = 0;
-	aux_dim = arr_atoi(*ref_map + y++, get_next_line(fd));
-	dim.x = aux_dim.x;
-	dim.z = aux_dim.z;
 	while (y < dim.y)
 	{
-		aux_dim = arr_atoi(*ref_map + y++, get_next_line(fd));
-		if (aux_dim.x != dim.x)
-		{
-			while (y >= 0)
-				free((*ref_map)[y--]);
-			free(*ref_map);
-			close(fd);
-			exit(EXIT_FAILURE);
-		}
-		if (aux_dim.z > dim.z)
-			dim.z = aux_dim.z;
+		tmp_x = arr_atoi(*ref_map + y++, get_next_line(fd));
+		if (dim.x == 0 || tmp_x < dim.x)
+			dim.x = tmp_x;
 	}
 	close(fd);
 	return (dim);
@@ -92,7 +79,7 @@ t_ivec3	read_map(int ***ref_map, char *filename)
 
 int	main(int argc, char **argv)
 {
-	t_ivec3	map_dim;
+	t_ivec2	map_dim;
 	int		**map;
 
 	if (argc != 2)

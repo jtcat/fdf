@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 19:11:27 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/04/22 03:03:21 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/04/23 14:39:03 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	project_map(t_rcontext *ctx)
 		sqrt(1.f / 3.f), -sqrt(1.f / 3.f), sqrt(1.f / 3.f)};
 	t_ivec2			p;
 	t_ivec3			vec;
-	t_ivec3			map_dim;
+	t_ivec2			map_dim;
 
 	p = (t_ivec2){-1, -1};
 	map_dim = ctx->map_dim;
@@ -59,16 +59,16 @@ void	project_map(t_rcontext *ctx)
 		while (++p.y < map_dim.y)
 		{
 			vec = (t_ivec3){(p.x - map_dim.x / 2) * ctx->scale,
-				(p.y - map_dim.y / 2) * ctx->scale,
-				ctx->raw_map[p.y][p.x] * ctx->scale};
-			ctx->proj_map[p.x][p.y] = mat3_vec3_prod(rot_mat, vec);
-			ctx->proj_map[p.x][p.y] = vec3_sum(ctx->proj_map[p.x][p.y],
+				-ctx->raw_map[p.y][p.x] * ctx->scale,
+				(p.y - map_dim.y / 2) * ctx->scale},
+				ctx->proj_map[p.x][p.y] = mat3_vec3_prod(rot_mat, vec);
+				ctx->proj_map[p.x][p.y] = vec3_sum(ctx->proj_map[p.x][p.y],
 					(t_ivec3){ctx->win_dim.x / 2, ctx->win_dim.y / 2, 0});
 		}
 	}
 }
 
-void	init_proj_map(t_ivec3 ***map, t_ivec3 dim)
+void	init_proj_map(t_ivec3 ***map, t_ivec2 dim)
 {
 	*map = malloc(sizeof(t_ivec3 *) * dim.x);
 	while (dim.x-- > 0)
@@ -107,7 +107,7 @@ void	destroy_context(t_rcontext *ctx)
 	free(ctx);
 }
 
-int	render_main(int **map, t_ivec3 dim)
+int	render_main(int **map, t_ivec2 dim)
 {
 	t_rcontext	*ctx;
 
