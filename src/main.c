@@ -6,12 +6,12 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:56:36 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/04/23 14:24:25 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/05/02 18:11:56 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <stdio.h>
+#include <limits.h>
 
 int	get_map_width(char *filename)
 {
@@ -32,7 +32,7 @@ int	get_map_width(char *filename)
 	return (lines);
 }
 
-int	arr_atoi(int **dest, char *str)
+int	arr_atoi(int **dest, char *str, int z_minmax[2])
 {
 	char	**strarr;
 	int		len;
@@ -50,36 +50,37 @@ int	arr_atoi(int **dest, char *str)
 	while (i < len)
 	{
 		(*dest)[i] = ft_atoi(strarr[i]);
+		z_minmax[0] = min(z_minmax[0], (*dest)[i]);
+		z_minmax[1] = max(z_minmax[1], (*dest)[i]);
 		free(strarr[i++]);
 	}
 	free(strarr);
 	return (len);
 }
 
-t_ivec2	read_map(int ***ref_map, char *filename)
+t_ivec3	read_map(int ***ref_map, char *filename)
 {
-	t_ivec2	dim;
-	int		tmp_x;
+	t_ivec3	dim;
+	int		z_minmax[2];
 	int		y;
 	int		fd;
 
-	dim = (t_ivec2){0, get_map_width(filename)};
+	dim = (t_ivec3){INT_MAX, get_map_width(filename), 0};
 	*ref_map = malloc(sizeof(int *) * dim.y);
 	fd = open(filename, O_RDONLY);
+	z_minmax[0] = INT_MAX;
+	z_minmax[1] = INT_MIN;
 	y = 0;
 	while (y < dim.y)
-	{
-		tmp_x = arr_atoi(*ref_map + y++, get_next_line(fd));
-		if (dim.x == 0 || tmp_x < dim.x)
-			dim.x = tmp_x;
-	}
+		dim.x = min(dim.x, arr_atoi(*ref_map + y++, get_next_line(fd), z_minmax));
+	dim.z = z_minmax[1] - z_minmax[0];
 	close(fd);
 	return (dim);
 }
 
 int	main(int argc, char **argv)
 {
-	t_ivec2	map_dim;
+	t_ivec3	map_dim;
 	int		**map;
 
 	if (argc != 2)

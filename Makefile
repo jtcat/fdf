@@ -6,7 +6,7 @@ MLX:= $(MLX_DIR)/libmlx.a
 LFT_DIR:= libft
 LFT:= $(LFT_DIR)/libft.a
 
-CFLAGS:= -Wall -Wextra -Werror
+CFLAGS:= -Wall -Wextra -Werror -g -o0
 LIB_FLAGS:= -lm -lXext -lX11
 
 SRC_DIR:= src
