@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:56:36 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/05/07 12:53:48 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/05/07 13:17:42 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ int	get_map_width(char *filename)
 	int		fd;
 
 	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+	{
+		ft_putstr_fd("fdf: unable to read file or it does not exist.\n", STDERR_FILENO);
+		exit(EXIT_FAILURE);
+	}
 	line = get_next_line(fd);
 	lines = 0;
 	while (line)
