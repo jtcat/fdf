@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 11:41:00 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/05/02 18:41:08 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/05/07 12:26:29 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,21 +61,21 @@ typedef struct s_rcontext
 	int		endian;
 	t_ivec3	win_dim;
 	int		**raw_map;
-	t_ivec3	**proj_map;
+	t_dvec3	**proj_map;
 	t_ivec3	map_dim;
 	int		line_color;
-	int		scale;
+	double	scale;
 }	t_rcontext;
 
 t_argb	uni_rgb(int r, int g, int b);
 void	plot(t_rcontext *ctx, int x, int y, t_argb color);
-void	draw_line(t_rcontext *cont, t_ivec3 start, t_ivec3 end, t_argb color);
+void	draw_line(t_rcontext *cont, t_dvec3 start, t_dvec3 end, t_argb color);
 int		render_main(int **map, t_ivec3 dim);
-t_ivec3	mat3_vec3_prod(const t_mat3 mat, t_ivec3 vec);
-t_ivec3	vec3_sum(t_ivec3 v1, t_ivec3 v2);
+t_dvec3	mat3_dvec3_prod(const t_mat3 mat, t_dvec3 vec);
+t_dvec3	dvec3_sum(t_dvec3 v1, t_dvec3 v2);
 
-int	max(int a, int b);
-int	min(int a, int b);
-int	calc_scale(t_ivec3 dim);
+int		max(int a, int b);
+int		min(int a, int b);
+double	calc_scale(t_ivec3 dim);
 
 #endif

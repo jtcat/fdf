@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 19:11:27 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/05/02 18:44:52 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/05/07 12:37:46 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,21 @@ void	project_map(t_rcontext *ctx)
 		p.y = -1;
 		while (++p.y < ctx->map_dim.y)
 		{
-			ctx->proj_map[p.x][p.y] = mat3_vec3_prod(rot_mat,
-					(t_ivec3){(p.x - ctx->map_dim.x / 2) * ctx->scale,
-					ctx->raw_map[p.y][p.x] * ctx->scale,
+			ctx->proj_map[p.x][p.y] = mat3_dvec3_prod(rot_mat,
+					(t_dvec3){(p.x - ctx->map_dim.x / 2) * ctx->scale,
+					(ctx->raw_map[p.y][p.x] - ctx->map_dim.z / 2) * ctx->scale,
 					(p.y - ctx->map_dim.y / 2) * ctx->scale});
-			ctx->proj_map[p.x][p.y] = vec3_sum(ctx->proj_map[p.x][p.y],
-				(t_ivec3){ctx->win_dim.x / 2, ctx->win_dim.y / 2, 0});
+			ctx->proj_map[p.x][p.y] = dvec3_sum(ctx->proj_map[p.x][p.y],
+				(t_dvec3){ctx->win_dim.x / 2, ctx->win_dim.y / 2, 0});
 		}
 	}
 }
 
-void	init_proj_map(t_ivec3 ***map, t_ivec3 dim)
+void	init_proj_map(t_dvec3 ***map, t_ivec3 dim)
 {
-	*map = malloc(sizeof(t_ivec3 *) * dim.x);
+	*map = malloc(sizeof(t_dvec3 *) * dim.x);
 	while (dim.x-- > 0)
-		(*map)[dim.x] = malloc(sizeof(t_ivec3) * dim.y);
+		(*map)[dim.x] = malloc(sizeof(t_dvec3) * dim.y);
 }
 
 void	create_window(t_rcontext *ctx)
