@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 17:56:36 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/05/02 18:11:56 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/05/07 12:53:48 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ int	arr_atoi(int **dest, char *str, int z_minmax[2])
 	while (i < len)
 	{
 		(*dest)[i] = ft_atoi(strarr[i]);
-		z_minmax[0] = min(z_minmax[0], (*dest)[i]);
-		z_minmax[1] = max(z_minmax[1], (*dest)[i]);
+		z_minmax[0] = fmin(z_minmax[0], (*dest)[i]);
+		z_minmax[1] = fmax(z_minmax[1], (*dest)[i]);
 		free(strarr[i++]);
 	}
 	free(strarr);
@@ -72,7 +72,8 @@ t_ivec3	read_map(int ***ref_map, char *filename)
 	z_minmax[1] = INT_MIN;
 	y = 0;
 	while (y < dim.y)
-		dim.x = min(dim.x, arr_atoi(*ref_map + y++, get_next_line(fd), z_minmax));
+		dim.x = fmin(dim.x, arr_atoi(*ref_map + y++,
+					get_next_line(fd), z_minmax));
 	dim.z = z_minmax[1] - z_minmax[0];
 	close(fd);
 	return (dim);

@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 11:41:00 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/05/07 12:26:29 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/05/07 13:00:07 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,11 @@ int		render_main(int **map, t_ivec3 dim);
 t_dvec3	mat3_dvec3_prod(const t_mat3 mat, t_dvec3 vec);
 t_dvec3	dvec3_sum(t_dvec3 v1, t_dvec3 v2);
 
-int		max(int a, int b);
-int		min(int a, int b);
+int		in_range(int lower, int upper, int numb);
+
+void	draw_image(t_rcontext *ctx);
+void	project_map(t_rcontext *ctx);
+
 double	calc_scale(t_ivec3 dim);
 
 #endif

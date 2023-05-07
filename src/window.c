@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 19:11:27 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/05/07 12:37:46 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/05/07 12:58:59 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,52 +18,6 @@ int	key_handler(int keycode, void *params)
 	if (keycode == KEY_ESC)
 		mlx_loop_end(params);
 	return (1);
-}
-
-void	draw_image(t_rcontext *ctx)
-{
-	t_ivec3	p;
-
-	p = (t_ivec3){-1, -1, -1};
-	while (++p.x < ctx->map_dim.x)
-	{
-		p.y = -1;
-		while (++p.y < ctx->map_dim.y)
-		{
-			if ((p.x + 1) < ctx->map_dim.x)
-				draw_line(ctx, ctx->proj_map[p.x][p.y],
-					ctx->proj_map[p.x + 1][p.y], ctx->line_color);
-			if ((p.y + 1) < ctx->map_dim.y)
-				draw_line(ctx, ctx->proj_map[p.x][p.y],
-					ctx->proj_map[p.x][p.y + 1], ctx->line_color);
-		}
-	}
-}
-
-void	project_map(t_rcontext *ctx)
-{
-	const double a = -35.264f;
-	const double b = -45;
-	const t_mat3	rot_mat = {
-		cos(b), 0, -sin(b),
-		sin(a)*sin(b), cos(a), cos(b)*sin(a),
-		cos(a)*sin(b), -sin(a), cos(a)*cos(b)};
-	t_ivec2			p;
-
-	p = (t_ivec2){-1, -1};
-	while (++p.x < ctx->map_dim.x)
-	{
-		p.y = -1;
-		while (++p.y < ctx->map_dim.y)
-		{
-			ctx->proj_map[p.x][p.y] = mat3_dvec3_prod(rot_mat,
-					(t_dvec3){(p.x - ctx->map_dim.x / 2) * ctx->scale,
-					(ctx->raw_map[p.y][p.x] - ctx->map_dim.z / 2) * ctx->scale,
-					(p.y - ctx->map_dim.y / 2) * ctx->scale});
-			ctx->proj_map[p.x][p.y] = dvec3_sum(ctx->proj_map[p.x][p.y],
-				(t_dvec3){ctx->win_dim.x / 2, ctx->win_dim.y / 2, 0});
-		}
-	}
 }
 
 void	init_proj_map(t_dvec3 ***map, t_ivec3 dim)

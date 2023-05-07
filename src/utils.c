@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/03 11:47:10 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/05/07 12:41:47 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/05/07 12:58:03 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,28 +22,26 @@ t_argb	uni_rgb(int r, int g, int b)
 	return (b | (g << 8) | (r << 16));
 }
 
-int	max(int a, int b)
-{
-	if (a > b)
-		return (a);
-	return (b);
-}
-
-int	min(int a, int b)
-{
-	if (a < b)
-		return (a);
-	return (b);
-}
-
-#include <stdio.h>
-
 double	calc_scale(t_ivec3 dim)
 {
 	double	test;
 
-	test = 1200.f / (double)(sqrt(dim.x * dim.x + dim.y * dim.y + dim.z * dim.z));
-	//test = 100000.f / (double)(dim.x * dim.y);
-	printf("s: %f\n", test);
+	test = 1200.f / (double)(sqrt(
+				dim.x * dim.x + dim.y * dim.y + dim.z * dim.z));
 	return (test);
+}
+
+int	in_range(int lower, int upper, int numb)
+{
+	return (numb >= lower && numb <= upper);
+}
+
+t_dvec3	mat3_dvec3_prod(const t_mat3 mat, t_dvec3 vec)
+{
+	t_dvec3	new_vec;
+
+	new_vec.x = mat[0] * vec.x + mat[1] * vec.y + mat[2] * vec.z;
+	new_vec.y = mat[3] * vec.x + mat[4] * vec.y + mat[5] * vec.z;
+	new_vec.z = mat[6] * vec.x + mat[7] * vec.y + mat[8] * vec.z;
+	return ((t_dvec3){round(new_vec.x), round(new_vec.y), 0});
 }
