@@ -22,6 +22,7 @@ $(NAME): $(MLX) $(LFT) $(OBJ)
 	$(CC) $(CFLAGS) $(LIB_FLAGS) $(OBJ) $(MLX) $(LFT) -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	mkdir -p obj
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(MLX):
