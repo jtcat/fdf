@@ -6,7 +6,7 @@
 /*   By: joaoteix <joaoteix@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/04 14:42:17 by joaoteix          #+#    #+#             */
-/*   Updated: 2023/05/07 13:11:59 by joaoteix         ###   ########.fr       */
+/*   Updated: 2023/05/08 13:27:40 by joaoteix         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	draw_image(t_rcontext *ctx)
 
 void	project_map(t_rcontext *ctx)
 {
-	const double	a = -35.264f;
-	const double	b = -45;
+	const double	a = 35.264f / 180.f * M_PI;
+	const double	b = M_PI_4;
 	const t_mat3	rot_mat = {
 		cos(b), 0, -sin(b),
 		sin(a) * sin(b), cos(a), cos(b) * sin(a),
@@ -51,7 +51,7 @@ void	project_map(t_rcontext *ctx)
 		{
 			ctx->proj_map[p.x][p.y] = mat3_dvec3_prod(rot_mat,
 					(t_dvec3){(p.x - ctx->map_dim.x / 2) * ctx->scale,
-					(ctx->raw_map[p.y][p.x] - ctx->map_dim.z / 2) * ctx->scale,
+					-(ctx->raw_map[p.y][p.x] - ctx->map_dim.z / 2) * ctx->scale,
 					(p.y - ctx->map_dim.y / 2) * ctx->scale});
 			ctx->proj_map[p.x][p.y] = dvec3_sum(ctx->proj_map[p.x][p.y],
 					(t_dvec3){ctx->win_dim.x / 2, ctx->win_dim.y / 2, 0});
