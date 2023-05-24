@@ -32,12 +32,12 @@ $(LFT):
 	$(MAKE) -C $(LFT_DIR)
 
 clean:
+	rm -f $(OBJ)
 	$(MAKE) clean -C $(MLX_DIR)
 	$(MAKE) clean -C $(LFT_DIR)
-	rm -f $(OBJ)
 
 fclean: clean
-	$(MAKE) fclean -C $(LFT_DIR)
 	rm -f $(NAME)
+	$(MAKE) fclean -C $(LFT_DIR)
 
 re: fclean all
